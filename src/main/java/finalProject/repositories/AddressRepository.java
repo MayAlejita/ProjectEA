@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AddressRepository extends JpaRepository<Address,Integer> {
     Address findByStateAddress(String stateAddress);
     Address findByCountry(String country);
+
 }
