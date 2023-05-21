@@ -14,12 +14,12 @@ public class CreditCard {
     @Id
     @GeneratedValue
     private int id;
-    private int numberCard;
+    private int cardNumber;
     private String expirationDate;
     private String securityCode;
 
-    public CreditCard(int numberCard, String expirationDate, String securityCode) {
-        this.numberCard = numberCard;
+    public CreditCard(int cardNumber, String expirationDate, String securityCode) {
+        this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
         this.securityCode = securityCode;
     }
