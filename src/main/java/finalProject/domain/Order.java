@@ -12,9 +12,9 @@ public class Order {
     @Id
     @GeneratedValue
     private int id;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Customer customer;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderLine> orderLineList;
