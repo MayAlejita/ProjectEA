@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "OrderLine")
 public class OrderLine {
     @Id
     @GeneratedValue
@@ -16,7 +18,7 @@ public class OrderLine {
     private boolean discount;
     private double discountValue;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Item> itemList;
+    private List<Item> itemList = new ArrayList<Item>();
 
     public OrderLine(int quantity, boolean discount, double discountValue) {
         this.quantity = quantity;
