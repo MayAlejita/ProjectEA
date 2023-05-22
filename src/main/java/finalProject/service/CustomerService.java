@@ -3,14 +3,22 @@ package finalProject.service;
 import finalProject.domain.Customer;
 import finalProject.dto.CustomerDTO;
 import finalProject.dto.OrderDTO;
+import finalProject.repositories.CustomerRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class CustomerService implements ICustomerService{
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
-        return new CustomerDTO();
+        Customer customer = customerRepository.save(mapper.map(customerDTO, Customer.class));
+        return mapper.map(customer, CustomerDTO.class);
     }
 
     @Override

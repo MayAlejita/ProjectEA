@@ -42,17 +42,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>nl.tritales.springrestdoc</groupId>
-			<artifactId>springrestdoc</artifactId>
-			<version>0.1.0</version>
-		</dependency>
-        <dependency>
-            <groupId>nl.tritales.springrestdoc</groupId>
-            <artifactId>springrestdoc</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-    </dependencies>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
