@@ -19,10 +19,10 @@ public class Item {
     private String image;//TODO
     private String barcodeNumber;
     private int quantityStock;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn
     private List<Review> reviewList;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Item> itemList;
 
     public Item(String name, String description, double price, String image, String barcodeNumber, int quantityStock) {
