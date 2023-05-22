@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface itemRepository extends JpaRepository<Item,Integer> {
+public interface ItemRepository extends JpaRepository<Item,Integer> {
     Item findById(int id);
     List<Item> findAllByOrder(Order order);
     List<Item> getAllItems();

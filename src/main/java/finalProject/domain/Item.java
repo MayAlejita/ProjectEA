@@ -1,6 +1,5 @@
 package finalProject.domain;
 
-import jakarta.annotation.sql.DataSourceDefinitions;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
