@@ -8,24 +8,23 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-
-public class Customer {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Customer {
     @Id
     @GeneratedValue
     private int id;
-    private String firstname;
-    private String lastname;
     private String emailAddress;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
     private List<CreditCard> creditCardList=new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
     private List<Address> addressList=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Order> orderList = new ArrayList<>();
 
-    public Customer(String firstname, String lastname, String emailAddress) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public Customer(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 

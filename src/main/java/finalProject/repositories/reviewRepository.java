@@ -1,4 +1,4 @@
-package finalProject.repository;
+package finalProject.repositories;
 
 import finalProject.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;

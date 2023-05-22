@@ -12,16 +12,15 @@ public class Order {
     @Id
     @GeneratedValue
     private int id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Customer customer;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Address address;
+    @ManyToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    private Status status;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name = "")
     private List<OrderLine> orderLineList;
 
-    public Order(Customer customer, Address address) {
-        this.customer = customer;
-        this.address = address;
+    public Order(int id, Status status) {
+        this.id = id;
+        this.status = status;
     }
 
     public List<OrderLine> getOrderLineList() {

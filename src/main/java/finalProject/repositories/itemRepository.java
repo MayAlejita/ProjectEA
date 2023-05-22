@@ -1,4 +1,4 @@
-package finalProject.repository;
+package finalProject.repositories;
 
 import finalProject.domain.Item;
 import finalProject.domain.Order;
