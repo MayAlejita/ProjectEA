@@ -1,10 +1,26 @@
 package finalProject.domain;
 
-import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+@Entity
+@Data
+@NoArgsConstructor
 public class CreditCard {
+    @Id
+    @GeneratedValue
     private int id;
-    private int numberCard;
+    private int cardNumber;
     private String expirationDate;
     private String securityCode;
+
+    public CreditCard(int cardNumber, String expirationDate, String securityCode) {
+        this.cardNumber = cardNumber;
+        this.expirationDate = expirationDate;
+        this.securityCode = securityCode;
+    }
 }
