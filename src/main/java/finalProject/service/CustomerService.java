@@ -44,11 +44,16 @@ public class CustomerService implements ICustomerService{
 
     @Override
     public CustomerDTO getCustomerById(int idCustomer) {
+        Customer customer = customerRepository.findById(idCustomer).orElse(null);
+        if(customer!=null){
+            return mapper.map(customer,CustomerDTO.class);
+        }
         return null;
     }
 
     @Override
     public List<OrderDTO> getOrderByCustomer(int idCustomer) {
+        
         return null;
     }
 
