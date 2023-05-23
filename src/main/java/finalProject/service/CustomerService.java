@@ -69,7 +69,10 @@ public class CustomerService implements ICustomerService{
 
     @Override
     public OrderDTO updateOrderByCustomer(int idCustomer, int idOrder, OrderDTO orderDTO) {
-        return null;
+        List<OrderDTO> list = getOrderByCustomer(idCustomer);
+        OrderDTO orderDTO1 = list.stream().filter(id->id.equals(idOrder)).findFirst().get();
+        orderDTO1.setStatus(orderDTO.getStatus());
+        return mapper.map(orderDTO1,OrderDTO.class);
     }
 
     @Override
