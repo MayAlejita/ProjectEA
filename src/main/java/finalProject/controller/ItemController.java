@@ -2,6 +2,7 @@ package finalProject.controller;
 import finalProject.domain.Item;
 import finalProject.service.ItemService;
 import finalProject.domain.Review;
+import finalProject.dto.CustomerDTO;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,9 +35,15 @@ public class ItemController {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateItemById(@RequestParam int id){
+        Item item = ItemService.updateItemById(id);
+        return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}/items/{idItems}")
     public ResponseEntity<?> updateItemById(@RequestParam int idItem, @RequestParam int idItems){
-        ItemService.updateItems(idItems);
+        ItemService.updateItemById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
