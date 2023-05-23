@@ -4,7 +4,10 @@ import finalProject.domain.Customer;
 import finalProject.domain.Item;
 import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
+import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
+import finalProject.repositories.ReviewRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,11 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
     @Autowired
     private ModelMapper mapper;
 
@@ -44,18 +52,30 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void addReview(Customer customer, int id) {
+    public Review addReview(Review review, int customerId, int itemId) {
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Item not found"));
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
 
+        review.setItem(item);
+        review.setCustomer(customer);
+
+        return reviewRepository.save(review);
     }
 
     @Override
-    public List<Review> getReview(int id) {
-        return null;
+    public List<Review> getReviewsByItem(int itemId) {
+        return reviewRepository.findByItemId(itemId);
     }
 
     @Override
-    public Review getReviewById(int itemId, int reviewId) {
-        return null;
+    public List<Review> getReviewsByCustomerId(int customerId) {
+        return reviewRepository.findByCustomerId(customerId);
+    }
+
+    @Override
+    public Review getReviewById(int reviewId) {
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
     }
 
     @Override

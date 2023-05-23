@@ -1,6 +1,7 @@
 package finalProject.controller;
 import finalProject.domain.Item;
 import finalProject.Service.ItemService;
+import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -37,5 +40,21 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/reviews/{itemId}/{customerId}")
+    public Review addReview(@PathVariable int itemId, @PathVariable int customerId, @RequestBody Review review) {
+        return itemService.addReview(review, itemId, customerId);
+    }
 
+    @GetMapping("/reviews/item/{itemId}")
+    public List<Review> getReviewsByItemId(@PathVariable int itemId) {
+        return itemService.getReviewsByItem(itemId);
+    }
+    @GetMapping("/reviews/customer/{customerId}")
+    public List<Review> getReviewsByCustomerId(@PathVariable int customerId) {
+        return itemService.getReviewsByCustomerId(customerId);
+    }
+    @GetMapping("/reviews/{reviewId}")
+    public Review getReviewById(@PathVariable int reviewId) {
+        return itemService.getReviewById(reviewId);
+    }
 }
