@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "Review")
 public class Review {
     @Id
     @GeneratedValue

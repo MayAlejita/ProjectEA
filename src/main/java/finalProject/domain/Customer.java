@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "Customer")
 public abstract class Customer {
     @Id
     @GeneratedValue
@@ -16,13 +17,13 @@ public abstract class Customer {
     private String emailAddress;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
-    private List<CreditCard> creditCardList=new ArrayList<>();
+    private List<CreditCard> creditCardList=new ArrayList<CreditCard>();
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
-    private List<Address> addressList=new ArrayList<>();
+    private List<Address> addressList=new ArrayList<Address>();
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
-    private List<Order> orderList = new ArrayList<>();
+    private List<Order> orderList = new ArrayList<Order>();
 
     public Customer(String emailAddress) {
         this.emailAddress = emailAddress;

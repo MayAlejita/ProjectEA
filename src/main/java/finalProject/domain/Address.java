@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Entity
 @Data
 @NoArgsConstructor
-
+@Table(name = "Address")
 public class Address {
     @Id
     @GeneratedValue

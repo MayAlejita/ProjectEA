@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "Item")
 public class Item {
     @Id
     @GeneratedValue
@@ -22,7 +24,7 @@ public class Item {
     @JoinColumn
     private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Item> itemList;
+    private List<Item> itemList = new ArrayList<Item>();
 
     public Item(String name, String description, double price, String image, String barcodeNumber, int quantityStock) {
         this.name = name;
