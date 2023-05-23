@@ -1,8 +1,10 @@
 package finalProject.domain;
 
 import jakarta.persistence.Entity;
+import lombok.Data;
 
 @Entity
-public class Corporate extends Customer{
+@Data
+public class Corporate extends Customer {
     private String name;
 }

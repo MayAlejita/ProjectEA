@@ -23,7 +23,7 @@ import java.util.List;
 public class CustomerDTO {
     private int id;
     private String emailAddress;
-    private List<CreditCardDTO> creditCard=new ArrayList<>();
-    private List<AddressDTO> address=new ArrayList<>();
-    private List<OrderDTO> order = new ArrayList<>();
+    private List<CreditCardDTO> creditCard = new ArrayList<>();
+    private List<AddressDTO> address = new ArrayList<>();
+//    private List<OrderDTO> order = new ArrayList<>();
 }

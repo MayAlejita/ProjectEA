@@ -1,6 +1,8 @@
 package finalProject.dto;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
 public class CreditCardDTO {

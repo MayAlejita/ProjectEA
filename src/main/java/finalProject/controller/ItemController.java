@@ -1,4 +1,5 @@
 package finalProject.controller;
+
 import finalProject.domain.Item;
 import finalProject.service.ItemService;
 import finalProject.domain.Review;
@@ -22,7 +23,9 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping("/")
-    public Page<Item> findAllItems(Pageable pageable) { return itemService.getAllItems(pageable); }
+    public Page<Item> findAllItems(Pageable pageable) {
+        return itemService.getAllItems(pageable);
+    }
 
     @GetMapping("/{id}")
     public Item getItemById(@PathVariable int id) {
@@ -30,13 +33,13 @@ public class ItemController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> addItem(ItemDTO itemDTO){
-        ItemDTO item =  itemService.addItem(itemDTO);
+    public ResponseEntity<?> addItem(ItemDTO itemDTO) {
+        ItemDTO item = itemService.addItem(itemDTO);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateItemById(@RequestParam int id){
+    public ResponseEntity<?> updateItemById(@RequestParam int id) {
         Item item = itemService.updateItemById(id);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
@@ -56,10 +59,12 @@ public class ItemController {
     public List<Review> getReviewsByItemId(@PathVariable int itemId) {
         return itemService.getReviewsByItem(itemId);
     }
+
     @GetMapping("/reviews/customer/{customerId}")
     public List<Review> getReviewsByCustomerId(@PathVariable int customerId) {
         return itemService.getReviewsByCustomerId(customerId);
     }
+
     @GetMapping("/reviews/{reviewId}")
     public Review getReviewById(@PathVariable int reviewId) {
         return itemService.getReviewById(reviewId);

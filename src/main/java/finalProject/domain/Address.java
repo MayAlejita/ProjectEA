@@ -24,7 +24,7 @@ public class Address {
     private AddressType addressType;
 
 
-    public Address(String stateAddress, String country, String state, String city, String zipCode,boolean isDefault, AddressType addressType) {
+    public Address(String stateAddress, String country, String state, String city, String zipCode, boolean isDefault, AddressType addressType) {
         this.stateAddress = stateAddress;
         this.country = country;
         this.state = state;
