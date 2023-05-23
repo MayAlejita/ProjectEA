@@ -1,6 +1,7 @@
 package finalProject.service;
 
 import finalProject.domain.Customer;
+import finalProject.domain.Order;
 import finalProject.dto.CustomerDTO;
 import finalProject.dto.OrderDTO;
 import finalProject.repositories.CustomerRepository;
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CustomerService implements ICustomerService{
     @Autowired
@@ -18,17 +20,26 @@ public class CustomerService implements ICustomerService{
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
         Customer customer = customerRepository.save(mapper.map(customerDTO, Customer.class));
-        return mapper.map(customer, CustomerDTO.class);
+        return mapper.map(customer,CustomerDTO.class);
     }
 
     @Override
     public OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) {
-        return null;
+        Customer customer = customerRepository.findById(idCustomer).orElse(null);
+        if(customer!=null){
+            Order order = mapper.map(orderDTO,Order.class);
+            customer.getOrderList().add(order);
+            customerRepository.save(customer);
+            return mapper.map(order,OrderDTO.class);
+        }
+       return null;
     }
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
-        return null;
+        List<Customer> customerList = customerRepository.findAll();
+        List<CustomerDTO> customerDTOList = mapper.map(customerList,List.class);
+        return customerDTOList;
     }
 
     @Override
