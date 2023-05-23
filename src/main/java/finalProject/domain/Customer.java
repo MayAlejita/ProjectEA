@@ -32,6 +32,7 @@ public abstract class Customer {
         return creditCardList;
     }
 
+    //setting credit card list
     public void setCreditCardList(CreditCard creditCard) {
         this.creditCardList.add(creditCard);
     }
