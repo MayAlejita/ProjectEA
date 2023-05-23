@@ -1,6 +1,5 @@
 package finalProject.Service;
 
-import finalProject.domain.Customer;
 import finalProject.domain.Item;
 import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
@@ -14,10 +13,12 @@ public interface ItemService {
     Page<Item> getAllItems(Pageable pageable);
     void deleteById(int id);
     ItemDTO addItem(ItemDTO item);
-    void addReview(Customer customer, int id);
+    Review addReview(Review review, int customerId, int itemId);
 
-    List <Review> getReview(int id);
-    Review getReviewById(int itemId, int reviewId);
+    List <Review> getReviewsByItem(int itemId);
+
+    List<Review> getReviewsByCustomerId(int customerId);
+    Review getReviewById(int reviewId);
 
     Item updateItemById(int id);
     Review updateReviewById(int itemId, int reviewId);
