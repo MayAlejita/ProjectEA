@@ -5,6 +5,7 @@ import finalProject.domain.AddressType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
 public class AddressDTO {

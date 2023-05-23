@@ -1,5 +1,6 @@
 package finalProject.controller;
 
+import finalProject.domain.Customer;
 import finalProject.dto.*;
 import finalProject.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ public class CustomerController {
     private ICustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO customerDTO) {
         CustomerDTO customer = customerService.saveCustomer(customerDTO);
-        if(customer == null){
+        if (customer == null) {
             MessageError msg = new MessageError();
             msg.setMessage("Only choice one default shipping Address");
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
@@ -26,51 +27,56 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/orders") // 1
-    public ResponseEntity<?> saveOrderByCustomer(@RequestParam int idCustomer, @RequestBody OrderDTO orderDTO){
+    @PostMapping("/{idCustomer}/orders")
+    public ResponseEntity<?> saveOrderByCustomer(@PathVariable int idCustomer, @RequestBody OrderDTO orderDTO) {
         OrderDTO order = customerService.saveOrderByCustomer(idCustomer, orderDTO);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> getAllCustomers(){
-//        List<CustomerDTO> customerList = customerService.getAllCustomers();
-//        CustomersDTO customers = new CustomersDTO();
-//        customers.setCustomerDTOList(customerList);
-//        return new ResponseEntity<>(customers, HttpStatus.OK);
-//    }
+    @GetMapping
+    public ResponseEntity<?> getAllCustomers() {
+        List<CustomerDTO> customerList = customerService.getAllCustomers();
+        CustomersDTO customers = new CustomersDTO();
+        customers.setCustomerDTOList(customerList);
+        return new ResponseEntity<>(customerList, HttpStatus.OK);
+    }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getCustomerById(@RequestParam int idCustomer){
-//        CustomerDTO customer = customerService.getCustomerById(idCustomer);
-//        return new ResponseEntity<>(customer, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/{id}/orders")
-//    public ResponseEntity<?> getOrderByCustomer(@RequestParam int idCustomer){
-//        List<OrderDTO> order = customerService.getOrderByCustomer(idCustomer);
-//        OrdersDTO orders = new OrdersDTO();
-//        orders.setOrderDTOList(order);
-//        return new ResponseEntity<>(orders, HttpStatus.OK);
-//    }
+    @GetMapping("/{idCustomer}")
+    public ResponseEntity<?> getCustomerById(@PathVariable int idCustomer) {
+        CustomerDTO customer = customerService.getCustomerById(idCustomer);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
 
-    @PutMapping("/{id}") // 2
-    public ResponseEntity<?> updateCustomerById(@RequestParam int idCustomer, @RequestBody CustomerDTO customerDTO){
+    @GetMapping("/{idCustomer}/orders")
+    public ResponseEntity<?> getOrderByCustomer(@PathVariable int idCustomer){
+        List<OrderDTO> order = customerService.getOrderByCustomer(idCustomer);
+        OrdersDTO orders = new OrdersDTO();
+        orders.setOrderDTOList(order);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @PutMapping("/{idCustomer}")
+    public ResponseEntity<?> updateCustomerById(@PathVariable int idCustomer, @RequestBody CustomerDTO customerDTO) {
         CustomerDTO customer = customerService.updateCustomerById(idCustomer, customerDTO);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/orders/{idOrders}") //3
-    public ResponseEntity<?> updateOrderByCustomer(@RequestParam int idCustomer, @RequestParam int idOrder,@RequestBody OrderDTO orderDTO){
+    @PutMapping("/{idCustomer}/orders/{idOrder}")
+    public ResponseEntity<?> updateOrderByCustomer(@PathVariable int idCustomer, @PathVariable int idOrder, @RequestBody OrderDTO orderDTO) {
         OrderDTO order = customerService.updateOrderByCustomer(idCustomer, idOrder, orderDTO);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteCustomerById(@RequestParam int idCustomer){
-//        customerService.deleteCustomerById(idCustomer);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    @DeleteMapping("/{idCustomer}")
+    public ResponseEntity<?> deleteCustomerById(@PathVariable int idCustomer) {
+        Customer customer = customerService.deleteCustomerById(idCustomer);
+        if (customer == null) {
+            MessageError msg = new MessageError();
+            msg.setMessage("Customer doesn't exist");
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 //    @PutMapping("/{id}/orders/{idOrders}")
 //    public ResponseEntity<?> deleteOrderByCustomer(@RequestParam int idCustomer, @RequestParam int idOrder){
 //        customerService.deleteOrderByCustomer(idCustomer, idOrder);
