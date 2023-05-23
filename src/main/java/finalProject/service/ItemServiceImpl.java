@@ -1,4 +1,4 @@
-package finalProject.Service;
+package finalProject.service;
 
 import finalProject.domain.Customer;
 import finalProject.domain.Item;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import finalProject.Service.ItemService;
 
 import java.util.List;
 

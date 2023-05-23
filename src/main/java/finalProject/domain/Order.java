@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Data
@@ -20,9 +21,9 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     private Customer customer;
 
-    public Order(int id, Status status) {
-        this.id = id;
-        this.status = status;
+    public Order( Customer customer) {
+        this.customer = customer;
+        this.orderLineList = new ArrayList<>();
     }
 
     public List<OrderLine> getOrderLineList() {

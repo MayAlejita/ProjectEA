@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CustomerDTO {
+public class CustomerDTO extends OrderDTO {
     private int id;
     private String emailAddress;
     private List<CreditCard> creditCardList=new ArrayList<>();

@@ -23,12 +23,18 @@ public abstract class Customer {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
     private List<Order> orderList = new ArrayList<>();
-
     public Customer(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 
-    public List<CreditCard> getCreditCardList() {
+    public void setOrderList(Order orderList) {
+        this.orderList.add(orderList);
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+        public List<CreditCard> getCreditCardList() {
         return creditCardList;
     }
 
