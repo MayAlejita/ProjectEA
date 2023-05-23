@@ -1,4 +1,4 @@
-package finalProject.Service;
+package finalProject.service;
 
 import finalProject.domain.Customer;
 import finalProject.domain.Item;

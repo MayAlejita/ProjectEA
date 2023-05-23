@@ -1,6 +1,6 @@
 package finalProject.controller;
 import finalProject.domain.Item;
-import finalProject.Service.ItemService;
+import finalProject.service.ItemService;
 import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
