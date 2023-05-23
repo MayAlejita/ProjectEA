@@ -3,7 +3,9 @@ package finalProject.Service;
 import finalProject.domain.Customer;
 import finalProject.domain.Item;
 import finalProject.domain.Review;
+import finalProject.dto.ItemDTO;
 import finalProject.repositories.ItemRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,25 +18,29 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
-    public Item findById(int id) {
-        return null;
+    public Item findItemById(int itemId) {
+        return mapper.map(itemRepository.findById(itemId).get(),
+                Item.class);
     }
 
     @Override
     public Page<Item> getAllItems(Pageable pageable) {
-        return null;
+        return itemRepository.findAll(pageable);
     }
 
     @Override
     public void deleteById(int id) {
-
+        itemRepository.deleteById(id);
     }
 
     @Override
-    public void addItem() {
-
+    public ItemDTO addItem(ItemDTO itemDTO) {
+        Item item = itemRepository.save(mapper.map(itemDTO, Item.class));
+        return mapper.map(item, ItemDTO.class);
     }
 
     @Override
@@ -53,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item updateById(int id) {
+    public Item updateItemById(int id) {
         return null;
     }
 
@@ -61,4 +67,5 @@ public class ItemServiceImpl implements ItemService {
     public Review updateReviewById(int itemId, int reviewId) {
         return null;
     }
+
 }
