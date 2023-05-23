@@ -14,6 +14,7 @@ public class Address {
     @Id
     @GeneratedValue
     private int id;
+    //street
     private String stateAddress;
     private String country;
     private String state;
