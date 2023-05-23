@@ -24,7 +24,7 @@ public class Customer {
     @JoinColumn(name = "customerId")
     private List<Address> addressList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "customerId")
     private List<Order> orderList = new ArrayList<>();
 
 //    public List<CreditCard> getCreditCardList() {

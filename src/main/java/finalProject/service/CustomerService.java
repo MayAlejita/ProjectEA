@@ -52,13 +52,10 @@ public class CustomerService implements ICustomerService {
     @Override
     public OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
-        if (customer != null) {
-            Order order = mapper.map(orderDTO, Order.class);
-            customer.getOrderList().add(order);
-            customerRepository.save(customer);
-            return mapper.map(order, OrderDTO.class);
-        }
-        return null;
+        Order order = mapper.map(orderDTO, Order.class);
+        customer.getOrderList().add(order);
+        Customer customerDb = customerRepository.save(customer);
+        return orderDTO;
     }
 
     @Override
@@ -82,11 +79,11 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public List<OrderDTO> getOrderByCustomer(int idCustomer) {
-        Optional<Customer> customer = customerRepository.findById(idCustomer);
-        if(customer.isPresent()){
-            List<Order> orderList = customer.get().getOrderList();
-            return mapper.map(orderList, List.class);
-        }
+//        Optional<Customer> customer = customerRepository.findById(idCustomer);
+//        if(customer.isPresent()){
+//            List<Order> orderList = customer.get().getOrderList();
+//            return mapper.map(orderList, List.class);
+//        }
         return null;
     }
 

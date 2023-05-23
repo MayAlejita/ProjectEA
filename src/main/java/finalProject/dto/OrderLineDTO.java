@@ -16,5 +16,5 @@ public class OrderLineDTO {
     @JsonProperty("discount")
     private boolean discount;
     private double discountValue;
-    private Item item;
+    private ItemDTO item;
 }

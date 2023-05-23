@@ -17,21 +17,5 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private Status status;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(name = "")
     private List<OrderLine> orderLineList;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    private Customer customer;
-
-    public Order(int id, Status status) {
-        this.id = id;
-        this.status = status;
-    }
-
-    public List<OrderLine> getOrderLineList() {
-        return orderLineList;
-    }
-
-    public void setOrderLineList(OrderLine order) {
-        this.orderLineList.add(order);
-    }
 }
