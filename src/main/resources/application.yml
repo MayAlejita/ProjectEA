@@ -13,6 +13,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
+      #      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
@@ -20,7 +21,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
-        
+
 logging:
   file:
     name: /Logging/${spring.application.name}/logs

@@ -10,38 +10,20 @@ import java.util.List;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Customer")
-public abstract class Customer {
+public class Customer {
     @Id
     @GeneratedValue
+    @Column(name = "customerId")
     private int id;
     private String emailAddress;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
-    private List<CreditCard> creditCardList=new ArrayList<CreditCard>();
+    @JoinColumn(name = "customerId")
+    private List<CreditCard> creditCardList=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerId")
+    private List<Address> addressList=new ArrayList<>();
+    @Transient
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
-    private List<Address> addressList=new ArrayList<Address>();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
-    private List<Order> orderList = new ArrayList<Order>();
-
-    public Customer(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public List<CreditCard> getCreditCardList() {
-        return creditCardList;
-    }
-
-    public void setCreditCardList(CreditCard creditCard) {
-        this.creditCardList.add(creditCard);
-    }
-
-    public List<Address> getAddressList() {
-        return addressList;
-    }
-
-    public void setAddressList( Address address) {
-        this.addressList.add(address);
-    }
+    private List<Order> orderList = new ArrayList<>();
 }

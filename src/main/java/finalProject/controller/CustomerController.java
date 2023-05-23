@@ -1,9 +1,6 @@
 package finalProject.controller;
 
-import finalProject.dto.CustomerDTO;
-import finalProject.dto.CustomersDTO;
-import finalProject.dto.OrderDTO;
-import finalProject.dto.OrdersDTO;
+import finalProject.dto.*;
 import finalProject.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +15,16 @@ public class CustomerController {
     @Autowired
     private ICustomerService customerService;
 
-//    @PostMapping
-//    public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO customerDTO){
-//        CustomerDTO customer = customerService.saveCustomer(customerDTO);
-//        return new ResponseEntity<>(customer, HttpStatus.OK);
-//    }
+    @PostMapping
+    public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO customerDTO){
+        CustomerDTO customer = customerService.saveCustomer(customerDTO);
+        if(customer == null){
+            MessageError msg = new MessageError();
+            msg.setMessage("Only choice one default shipping Address");
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
 
     @PostMapping("/{id}/orders") // 1
     public ResponseEntity<?> saveOrderByCustomer(@RequestParam int idCustomer, @RequestBody OrderDTO orderDTO){

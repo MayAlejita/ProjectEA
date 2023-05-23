@@ -20,7 +20,7 @@ public class Address {
     private String city;
     private String zipCode;
     private boolean isDefault;
-    @ManyToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private AddressType addressType;
 
 
