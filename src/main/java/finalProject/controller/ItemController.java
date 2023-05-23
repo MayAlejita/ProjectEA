@@ -37,14 +37,8 @@ public class ItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateItemById(@RequestParam int id){
-        Item item = ItemService.updateItemById(id);
+        Item item = itemService.updateItemById(id);
         return new ResponseEntity<>(item, HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}/items/{idItems}")
-    public ResponseEntity<?> updateItemById(@RequestParam int idItem, @RequestParam int idItems){
-        ItemService.updateItemById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
