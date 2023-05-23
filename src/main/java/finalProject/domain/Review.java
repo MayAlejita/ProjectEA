@@ -25,11 +25,4 @@ public class Review {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Review(String title, String description, int numberStar, LocalDate date, Customer customer) {
-        this.title = title;
-        this.description = description;
-        this.numberStar = numberStar;
-        this.date = date;
-        this.customer = customer;
-    }
 }
