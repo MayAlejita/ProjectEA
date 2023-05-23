@@ -32,13 +32,13 @@ public class CustomerController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> getAllCustomers(){
-//        List<CustomerDTO> customerList = customerService.getAllCustomers();
-//        CustomersDTO customers = new CustomersDTO();
-//        customers.setCustomerDTOList(customerList);
-//        return new ResponseEntity<>(customers, HttpStatus.OK);
-//    }
+    @GetMapping
+    public ResponseEntity<?> getAllCustomers(){
+        List<CustomerDTO> customerList = customerService.getAllCustomers();
+        CustomersDTO customers = new CustomersDTO();
+        customers.setCustomerDTOList(customerList);
+        return new ResponseEntity<>(customerList, HttpStatus.OK);
+    }
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<?> getCustomerById(@RequestParam int idCustomer){
