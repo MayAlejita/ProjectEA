@@ -10,11 +10,10 @@ import finalProject.repositories.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -36,8 +35,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<Item> getAllItems(Pageable pageable) {
-        return itemRepository.findAll(pageable);
+    public List<ItemDTO> getAllItems() {
+        List<Item> listItems = itemRepository.findAll();
+        listItems.stream().map(e -> mapper.map(e, ItemDTO.class));
+        return listItems.stream().map(e -> mapper.map(e, ItemDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override

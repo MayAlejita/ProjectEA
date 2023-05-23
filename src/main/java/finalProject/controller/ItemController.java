@@ -2,11 +2,8 @@ package finalProject.controller;
 import finalProject.domain.Item;
 import finalProject.service.ItemService;
 import finalProject.domain.Review;
-import finalProject.dto.CustomerDTO;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +18,23 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("/")
-    public Page<Item> findAllItems(Pageable pageable) { return itemService.getAllItems(pageable); }
+    @GetMapping
+    public ResponseEntity<?> findAllItems() {
+        List<ItemDTO> itemDTOList = itemService.getAllItems();
+        ItemDTO items = new ItemDTO();
+        items.setItemDTOList(itemDTOList);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public Item getItemById(@PathVariable int id) {
         return itemService.findItemById(id);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<?> addItem(ItemDTO itemDTO){
-        ItemDTO item =  itemService.addItem(itemDTO);
-        return new ResponseEntity<>(item, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<?> addItem(@RequestBody ItemDTO itemDTO){
+        itemService.addItem(itemDTO);
+        return new ResponseEntity<>(itemDTO,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
