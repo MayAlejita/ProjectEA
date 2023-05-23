@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomerService implements ICustomerService{
     @Autowired
@@ -28,7 +29,10 @@ public class CustomerService implements ICustomerService{
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
-        return null;
+        List<Customer> listCustomer = customerRepository.findAll();
+        listCustomer.stream().map(e -> mapper.map(e, CustomerDTO.class));
+        return listCustomer.stream().map(e -> mapper.map(e, CustomerDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
