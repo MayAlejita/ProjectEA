@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Order")
 public class Order {
     @Id
     @GeneratedValue
@@ -18,9 +16,12 @@ public class Order {
     private Status status;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinTable(name = "")
-    private List<OrderLine> orderLineList = new ArrayList<OrderLine>();
+    private List<OrderLine> orderLineList;
+    @ManyToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    private Customer customer;
 
-    public Order( Status status) {
+    public Order(int id, Status status) {
+        this.id = id;
         this.status = status;
     }
 

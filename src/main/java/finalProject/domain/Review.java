@@ -1,7 +1,6 @@
 package finalProject.domain;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,11 @@ public class Review {
     private String description;
     private int numberStar;
     private LocalDate date;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Review(String title, String description, int numberStar, LocalDate date, Customer customer) {
