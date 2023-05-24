@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CustomerRepository extends JpaRepository<Customer,Integer>{
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 
 }
