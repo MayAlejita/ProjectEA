@@ -1,5 +1,6 @@
 package finalProject.service;
 
+import finalProject.config.ExceptionMessage;
 import finalProject.domain.*;
 import finalProject.dto.*;
 import finalProject.repositories.CustomerRepository;
@@ -10,9 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -53,37 +53,32 @@ public class CustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public MessageError saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) {
+    public OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) throws ExceptionMessage{
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
-        MessageError msg;
         if(customer == null){
-            msg = new MessageError();
-            msg.setMessage("The customer doesn't exist");
-            return msg;
+            throw new ExceptionMessage("The customer doesn't exist");
         }
         if(!validateOrderLine(orderDTO)){
-            msg = new MessageError();
-            msg.setMessage("The Item is duplicated in the same Order");
-            return msg;
+            throw new ExceptionMessage("The Item is duplicated in the same Order");
         }
         Order order = mapper.map(orderDTO, Order.class);
         if(!validateOrderLineQuantity(order)){
-            msg = new MessageError();
-            msg.setMessage("The quantity of stock is incorrect");
-            return msg;
+            throw new ExceptionMessage("The quantity of stock is incorrect");
         }
         order.getOrderLineList().stream().forEach(ol -> {
             Optional<Item> item =itemRepository.findById(ol.getItem().getId());
             if(item.isPresent()){
                 if(ol.getQuantity() <= item.get().getQuantityStock()){
-                    item.get().setQuantityStock(item.get().getQuantityStock() - ol.getQuantity());
                     ol.setItem(item.get());
+                }
+                else{
+                    throw new ExceptionMessage("The quantity is greater than quantity stock");
                 }
             }
         });
         customer.getOrderList().add(order);
-        customerRepository.save(customer);
-        return null;
+        Customer orderDb = customerRepository.save(customer);
+        return orderDTO;
     }
 
     private boolean validateOrderLineQuantity(Order order) {
@@ -102,12 +97,11 @@ public class CustomerService implements ICustomerService {
     }
 
     private boolean validateOrderLine(OrderDTO orderDTO) {
-        long numberItem = orderDTO.getOrderLine().stream()
-                                .map(a -> a.getItem().getId()).count();
-        if (numberItem > 1) {
-            return false;
-        }
-        return true;
+        Set<Integer> items = orderDTO.getOrderLine().stream()
+                .map(x -> x.getItem().getId())
+                .collect(Collectors.toSet());
+
+        return items.size() == orderDTO.getOrderLine().size();
     }
     @Override
     public List<CustomerDTO> getAllCustomers() {
@@ -179,13 +173,29 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public OrderDTO updateOrderByCustomer(int idCustomer, int idOrder, OrderDTO orderDTO) {
+    public OrderDTO updateOrderByCustomer(int idCustomer, int idOrder, OrderDTO orderDTO) throws ExceptionMessage{
         List<OrderDTO> list = getOrderByCustomer(idCustomer);
         Optional<OrderDTO> orderDTO1 = list.stream().filter(id -> id.getId() == idOrder).findFirst();
         if (orderDTO1.isPresent()) {
             if(orderDTO1.get().getStatus().getStatus().equals("placed")){
                 return null;
             }
+            if(orderDTO.getStatus().getStatus().equals(("placed")))
+                orderDTO.getOrderLine().stream().forEach(ol -> {
+                Optional<Item> item =itemRepository.findById(ol.getItem().getId());
+                if(item.isPresent()){
+                    if(ol.getQuantity() <= item.get().getQuantityStock()){
+                        item.get().setQuantityStock(item.get().getQuantityStock() - ol.getQuantity());
+                        ol.setItem(mapper.map(item.get(), ItemDTO.class));
+                    }
+                    else{
+                        throw new ExceptionMessage("The quantity is greater than quantity stock");
+                    }
+                }
+                else{
+                    throw new ExceptionMessage("The item doesn't exist");
+                }
+            });
             orderDTO.setId(orderDTO1.get().getId());
             Order order = mapper.map(orderDTO, Order.class);
             Order orderDB = orderRepository.save(order);

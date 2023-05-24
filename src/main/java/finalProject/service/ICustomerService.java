@@ -3,7 +3,6 @@ package finalProject.service;
 import finalProject.domain.Customer;
 import finalProject.domain.Order;
 import finalProject.dto.CustomerDTO;
-import finalProject.dto.MessageError;
 import finalProject.dto.OrderDTO;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 public interface ICustomerService {
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
 
-    MessageError saveOrderByCustomer(int idCustomer, OrderDTO orderDTO);
+    OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO);
 
     List<CustomerDTO> getAllCustomers();
 
