@@ -1,5 +1,6 @@
 package finalProject.controller;
 
+import finalProject.config.ExceptionMessage;
 import finalProject.domain.Customer;
 import finalProject.domain.Order;
 import finalProject.dto.*;
@@ -17,8 +18,6 @@ public class CustomerController {
     @Autowired
     private ICustomerService customerService;
 
-
-
     @PostMapping
     public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO customerDTO) {
         CustomerDTO customer = customerService.saveCustomer(customerDTO);
@@ -32,11 +31,13 @@ public class CustomerController {
 
     @PostMapping("/{idCustomer}/orders")
     public ResponseEntity<?> saveOrderByCustomer(@PathVariable int idCustomer, @RequestBody OrderDTO orderDTO) {
-        MessageError msg = customerService.saveOrderByCustomer(idCustomer, orderDTO);
-        if(msg != null){
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        try {
+            OrderDTO order = customerService.saveOrderByCustomer(idCustomer, orderDTO);
+            return new ResponseEntity<>(order, HttpStatus.OK);
         }
-        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
+        catch (ExceptionMessage ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping
@@ -68,13 +69,18 @@ public class CustomerController {
 
     @PutMapping("/{idCustomer}")
     public ResponseEntity<?> updateCustomerById(@PathVariable int idCustomer, @RequestBody CustomerDTO customerDTO) {
-        CustomerDTO customer = customerService.updateCustomerById(idCustomer, customerDTO);
-        if (customer == null) {
-            MessageError msg = new MessageError();
-            msg.setMessage("Customer can't be updated");
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        try{
+            CustomerDTO customer = customerService.updateCustomerById(idCustomer, customerDTO);
+            if (customer == null) {
+                MessageError msg = new MessageError();
+                msg.setMessage("Customer can't be updated");
+                return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(customer, HttpStatus.OK);
         }
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        catch (ExceptionMessage ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{idCustomer}/orders/{idOrder}")

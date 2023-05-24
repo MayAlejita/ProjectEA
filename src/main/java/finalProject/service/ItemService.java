@@ -1,7 +1,6 @@
 package finalProject.service;
 
 import finalProject.domain.Item;
-import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
 
 import java.util.List;
@@ -15,15 +14,6 @@ public interface ItemService {
 
     ItemDTO addItem(ItemDTO item);
 
-    Review addReview(Review review, int customerId, int itemId);
+    Item updateItemById(int id, ItemDTO itemDTO);
 
-    List<Review> getReviewsByItem(int itemId);
-
-    List<Review> getReviewsByCustomerId(int customerId);
-
-    Review getReviewById(int reviewId);
-
-    Item updateItemById(int id);
-
-    Review updateReviewById(int itemId, int reviewId);
 }
