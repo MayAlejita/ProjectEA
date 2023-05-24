@@ -1,12 +1,10 @@
 package finalProject.service;
 
-import finalProject.domain.Corporate;
-import finalProject.domain.Customer;
-import finalProject.domain.Order;
-import finalProject.domain.Personal;
-import finalProject.dto.CustomerDTO;
-import finalProject.dto.OrderDTO;
+import finalProject.domain.*;
+import finalProject.dto.*;
 import finalProject.repositories.CustomerRepository;
+import finalProject.repositories.ItemRepository;
+import finalProject.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,10 @@ import java.util.stream.Collectors;
 public class CustomerService implements ICustomerService {
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    OrderRepository orderRepository;
+    @Autowired
+    ItemRepository itemRepository;
     @Autowired
     private ModelMapper mapper;
 
@@ -51,20 +53,73 @@ public class CustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) {
+    public MessageError saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
+        MessageError msg;
+        if(customer == null){
+            msg = new MessageError();
+            msg.setMessage("The customer doesn't exist");
+            return msg;
+        }
+        if(!validateOrderLine(orderDTO)){
+            msg = new MessageError();
+            msg.setMessage("The Item is duplicated in the same Order");
+            return msg;
+        }
         Order order = mapper.map(orderDTO, Order.class);
+        if(!validateOrderLineQuantity(order)){
+            msg = new MessageError();
+            msg.setMessage("The quantity of stock is incorrect");
+            return msg;
+        }
+        order.getOrderLineList().stream().forEach(ol -> {
+            Optional<Item> item =itemRepository.findById(ol.getItem().getId());
+            if(item.isPresent()){
+                if(ol.getQuantity() <= item.get().getQuantityStock()){
+                    item.get().setQuantityStock(item.get().getQuantityStock() - ol.getQuantity());
+                    ol.setItem(item.get());
+                }
+            }
+        });
         customer.getOrderList().add(order);
-        Customer customerDb = customerRepository.save(customer);
-        return orderDTO;
+        customerRepository.save(customer);
+        return null;
     }
 
+    private boolean validateOrderLineQuantity(Order order) {
+        for(OrderLine ol : order.getOrderLineList()) {
+            Optional<Item> item = itemRepository.findById(ol.getItem().getId());
+            if(item.isPresent()){
+                if(ol.getQuantity() > item.get().getQuantityStock()){
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateOrderLine(OrderDTO orderDTO) {
+        long numberItem = orderDTO.getOrderLine().stream()
+                                .map(a -> a.getItem().getId()).count();
+        if (numberItem > 1) {
+            return false;
+        }
+        return true;
+    }
     @Override
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> listCustomer = customerRepository.findAll();
         List<CustomerDTO> list = new ArrayList<>();
         listCustomer.forEach(c -> {
-            list.add(mapper.map(c, CustomerDTO.class));
+            if(c.getClass().getSimpleName().equals("Personal")){
+                list.add(mapper.map(c, PersonalDTO.class));
+            }
+            else{
+                list.add(mapper.map(c, CorporateDTO.class));
+            }
         });
         return list;
     }
@@ -73,7 +128,12 @@ public class CustomerService implements ICustomerService {
     public CustomerDTO getCustomerById(int idCustomer) {
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
         if (customer != null) {
-            return mapper.map(customer, CustomerDTO.class);
+            if(customer.getClass().getSimpleName().equals("Personal")){
+                return mapper.map(customer, PersonalDTO.class);
+            }
+            else{
+                return mapper.map(customer, CorporateDTO.class);
+            }
         }
         return null;
     }
@@ -83,9 +143,18 @@ public class CustomerService implements ICustomerService {
         Optional<Customer> customer = customerRepository.findById(idCustomer);
         if(customer.isPresent()){
             List<Order> orderList = customer.get().getOrderList();
-            return mapper.map(orderList, List.class);
+            List<OrderDTO> list = new ArrayList<>();
+            orderList.forEach(o ->{
+                list.add(mapper.map(o, OrderDTO.class));
+            });
+            return list;
         }
         return null;
+    }
+
+    @Override
+    public double getTotalByOrder(int idCustomer, int idOrder) {
+        return 0;
     }
 
     @Transactional
@@ -105,28 +174,35 @@ public class CustomerService implements ICustomerService {
         if (customer.isPresent()) {
             customerRepository.deleteById(idCustomer);
             return customer.get();
-        } else
-            return null;
+        }
+        return null;
     }
 
     @Override
     public OrderDTO updateOrderByCustomer(int idCustomer, int idOrder, OrderDTO orderDTO) {
         List<OrderDTO> list = getOrderByCustomer(idCustomer);
-        OrderDTO orderDTO1 = list.stream().filter(id -> id.equals(idOrder)).findFirst().get();
-        orderDTO1.setStatus(orderDTO.getStatus());
-        return mapper.map(orderDTO1, OrderDTO.class);
+        Optional<OrderDTO> orderDTO1 = list.stream().filter(id -> id.getId() == idOrder).findFirst();
+        if (orderDTO1.isPresent()) {
+            if(orderDTO1.get().getStatus().getStatus().equals("placed")){
+                return null;
+            }
+            orderDTO.setId(orderDTO1.get().getId());
+            Order order = mapper.map(orderDTO, Order.class);
+            Order orderDB = orderRepository.save(order);
+            return mapper.map(orderDB, OrderDTO.class);
+        }
+        return null;
     }
 
+    @Transactional
     @Override
-    public void deleteOrderByCustomer(int idCustomer, int idOrder) {
-        Customer  customer= customerRepository.findById(idCustomer).orElse(null);
-        List<Order> orderList= customer.getOrderList();
-        Order order= orderList.stream().filter(id->id.equals(idOrder)).findFirst().get();
-        orderList.remove(order);
-//
-//        List<OrderDTO> list=  getOrderByCustomer(idCustomer);
-//        OrderDTO orderDTO= list.stream().filter(id->id.equals(idOrder)).findFirst().get();
-//        list.remove(orderDTO);
-
+    public Order deleteOrderByCustomer(int idCustomer, int idOrder) {
+        List<OrderDTO> list = getOrderByCustomer(idCustomer);
+        Optional<OrderDTO> orderDTO = list.stream().filter(id -> id.getId() == idOrder).findFirst();
+        if (orderDTO.isPresent()) {
+            orderRepository.deleteById(idOrder);
+            return mapper.map(orderDTO.get(), Order.class);
+        }
+        return null;
     }
 }

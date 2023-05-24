@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.domain.Customer;
+import finalProject.domain.Order;
 import finalProject.dto.*;
 import finalProject.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,11 @@ public class CustomerController {
 
     @PostMapping("/{idCustomer}/orders")
     public ResponseEntity<?> saveOrderByCustomer(@PathVariable int idCustomer, @RequestBody OrderDTO orderDTO) {
-        OrderDTO order = customerService.saveOrderByCustomer(idCustomer, orderDTO);
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        MessageError msg = customerService.saveOrderByCustomer(idCustomer, orderDTO);
+        if(msg != null){
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
     }
 
     @GetMapping
@@ -54,16 +58,32 @@ public class CustomerController {
         orders.setOrderDTOList(order);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+    @GetMapping("/{idCustomer}/orders/{idOrder}")
+    public ResponseEntity<?> getTotalByOrder(@PathVariable int idCustomer, @PathVariable int idOrder){
+        double total = customerService.getTotalByOrder(idCustomer, idOrder);
+        return new ResponseEntity<>(total, HttpStatus.OK);
+    }
 
     @PutMapping("/{idCustomer}")
     public ResponseEntity<?> updateCustomerById(@PathVariable int idCustomer, @RequestBody CustomerDTO customerDTO) {
         CustomerDTO customer = customerService.updateCustomerById(idCustomer, customerDTO);
+        if (customer == null) {
+            MessageError msg = new MessageError();
+            msg.setMessage("Customer can't be updated");
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @PutMapping("/{idCustomer}/orders/{idOrder}")
-    public ResponseEntity<?> updateOrderByCustomer(@PathVariable int idCustomer, @PathVariable int idOrder, @RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> updateOrderByCustomer(@PathVariable int idCustomer, @PathVariable int idOrder,
+                                                   @RequestBody OrderDTO orderDTO) {
         OrderDTO order = customerService.updateOrderByCustomer(idCustomer, idOrder, orderDTO);
+        if (order == null) {
+            MessageError msg = new MessageError();
+            msg.setMessage("Order can't be updated");
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
@@ -77,10 +97,16 @@ public class CustomerController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-//    @PutMapping("/{id}/orders/{idOrders}")
-//    public ResponseEntity<?> deleteOrderByCustomer(@RequestParam int idCustomer, @RequestParam int idOrder){
-//        customerService.deleteOrderByCustomer(idCustomer, idOrder);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+
+    @DeleteMapping("/{idCustomer}/orders/{idOrder}")
+    public ResponseEntity<?> deleteOrderByCustomer(@PathVariable int idCustomer, @PathVariable int idOrder){
+        Order order = customerService.deleteOrderByCustomer(idCustomer, idOrder);
+        if(order == null){
+            MessageError msg = new MessageError();
+            msg.setMessage("Order doesn't exist");
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
