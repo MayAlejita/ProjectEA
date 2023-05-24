@@ -210,8 +210,10 @@ public class CustomerService implements ICustomerService {
         List<OrderDTO> list = getOrderByCustomer(idCustomer);
         Optional<OrderDTO> orderDTO = list.stream().filter(id -> id.getId() == idOrder).findFirst();
         if (orderDTO.isPresent()) {
+            OrderDTO deletedOrderDTO = orderDTO.get();
+            list.remove(deletedOrderDTO);
             orderRepository.deleteById(idOrder);
-            return mapper.map(orderDTO.get(), Order.class);
+            return mapper.map(deletedOrderDTO, Order.class);
         }
         return null;
     }
