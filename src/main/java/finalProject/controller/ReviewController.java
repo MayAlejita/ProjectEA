@@ -1,8 +1,8 @@
 package finalProject.controller;
-
 import finalProject.domain.Review;
 import finalProject.dto.ReviewDTO;
-import finalProject.service.ReviewService;
+import finalProject.service.IReviewService;
+import finalProject.service.ReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/review")
 public class ReviewController {
     @Autowired
-    ReviewService reviewService;
+    private IReviewService reviewService;
 
     @PostMapping("/{itemId}/{customerId}")
     public Review addReview(@PathVariable int itemId, @PathVariable int customerId, @RequestBody Review review) {

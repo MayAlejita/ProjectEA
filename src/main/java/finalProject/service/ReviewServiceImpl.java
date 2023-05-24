@@ -8,14 +8,13 @@ import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
 import finalProject.repositories.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ReviewService implements IReviewService{
+public class ReviewServiceImpl implements IReviewService{
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
