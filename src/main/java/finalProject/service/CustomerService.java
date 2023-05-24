@@ -23,8 +23,6 @@ public class CustomerService implements ICustomerService {
     CustomerRepository customerRepository;
 
     @Autowired
-    OrderRepository orderRepository;
-    @Autowired
     private ModelMapper mapper;
 
     @Override
@@ -126,5 +124,9 @@ public class CustomerService implements ICustomerService {
     @Override
     public void deleteOrderByCustomer(int idCustomer, int idOrder) {
 
+    }
+
+    public Optional<Customer> findByEmail(String email) {
+        return customerRepository.findByEmail(email);
     }
 }

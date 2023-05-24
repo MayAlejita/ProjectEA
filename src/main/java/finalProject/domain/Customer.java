@@ -50,4 +50,8 @@ public class Customer {
     public void setOrderList(List<Order> orderList) {
         this.orderList.addAll(orderList);
     }
+
+    public Customer(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 }
