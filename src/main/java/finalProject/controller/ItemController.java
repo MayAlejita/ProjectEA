@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.domain.Item;
+import finalProject.dto.ReviewDTO;
 import finalProject.service.ItemService;
 import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
@@ -39,8 +40,8 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateItemById(@RequestParam int id) {
-        Item item = itemService.updateItemById(id);
+    public ResponseEntity<?> updateItemById(@PathVariable int id, @RequestBody ItemDTO itemDTO) {
+        Item item = itemService.updateItemById(id, itemDTO);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
@@ -69,4 +70,11 @@ public class ItemController {
     public Review getReviewById(@PathVariable int reviewId) {
         return itemService.getReviewById(reviewId);
     }
+
+    @PutMapping("/reviews/{reviewId}")
+    public ResponseEntity<?> updateReviewById(@PathVariable int reviewId, @RequestBody ReviewDTO reviewDTO) {
+        Review review = itemService.updateReviewById(reviewId, reviewDTO);
+        return new ResponseEntity<>(review, HttpStatus.OK);
+    }
+
 }

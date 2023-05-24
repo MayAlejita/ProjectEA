@@ -3,6 +3,7 @@ package finalProject.service;
 import finalProject.domain.Item;
 import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
+import finalProject.dto.ReviewDTO;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface ItemService {
 
     Review getReviewById(int reviewId);
 
-    Item updateItemById(int id);
+    Item updateItemById(int id, ItemDTO itemDTO);
 
-    Review updateReviewById(int itemId, int reviewId);
+    Review updateReviewById(int reviewId, ReviewDTO reviewDTO);
 }
