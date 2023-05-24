@@ -25,3 +25,7 @@ spring:
 logging:
   file:
     name: /Logging/${spring.application.name}/logs
+
+    spring:
+      main:
+        allow-bean-definition-overriding: true

@@ -2,7 +2,9 @@ package finalProject.service;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.Before;
 import org.junit.Test;
