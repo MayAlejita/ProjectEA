@@ -40,11 +40,11 @@ public class CustomerController {
         return new ResponseEntity<>(customerList, HttpStatus.OK);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getCustomerById(@RequestParam int idCustomer){
-//        CustomerDTO customer = customerService.getCustomerById(idCustomer);
-//        return new ResponseEntity<>(customer, HttpStatus.OK);
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCustomerById(@PathVariable int id){
+        CustomerDTO customer = customerService.getCustomerById(id);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
 //
 //    @GetMapping("/{id}/orders")
 //    public ResponseEntity<?> getOrderByCustomer(@RequestParam int idCustomer){
