@@ -30,7 +30,7 @@ public class Customer {
 //    public List<CreditCard> getCreditCardList() {
 //        return creditCardList;
 //    }
-
+//
 //    public void setCreditCardList(CreditCard creditCardList) {
 //        this.creditCardList.add(creditCardList);
 //    }
@@ -43,11 +43,15 @@ public class Customer {
 //        this.addressList.add(addressList);
 //    }
 //
-//    public List<Order> getOrderList() {
-//        return orderList;
-//    }
-//
-//    public void setOrderList(Order orderList) {
-//        this.orderList.add(orderList);
-//    }
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList.addAll(orderList);
+    }
+
+    public Customer(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 }
