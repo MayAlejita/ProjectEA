@@ -23,6 +23,4 @@ public class ItemDTO {
     public void setListDTOList(List<ItemDTO> itemDTOList) {
         this.itemDTOList = itemDTOList;
     }
-
-
 }

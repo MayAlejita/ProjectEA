@@ -4,10 +4,12 @@ import finalProject.domain.Customer;
 import finalProject.domain.Item;
 import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
+import finalProject.dto.ReviewDTO;
 import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
 import finalProject.repositories.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,10 +59,8 @@ public class ItemServiceImpl implements ItemService {
     public Review addReview(Review review, int customerId, int itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Item not found"));
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
-
         review.setItem(item);
         review.setCustomer(customer);
-
         return reviewRepository.save(review);
     }
 
@@ -81,13 +81,44 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item updateItemById(int id) {
-        return null;
+    @Transactional
+    public Item updateItemById(int id, ItemDTO itemDTO) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Item not found"));
+        if(itemDTO.getName() != null) {
+            item.setName(itemDTO.getName());
+        }
+        if(itemDTO.getPrice() != 0) {
+            item.setPrice(itemDTO.getPrice());
+        }
+        if(itemDTO.getBarcodeNumber() != null) {
+            item.setBarcodeNumber(itemDTO.getBarcodeNumber());
+        }
+        if(itemDTO.getImage() != null) {
+            item.setImage(itemDTO.getImage());
+        }
+        if(itemDTO.getDescription() != null) {
+            item.setDescription(itemDTO.getDescription());
+        }
+        if(itemDTO.getQuantityStock() != 0) {
+            item.setQuantityStock(itemDTO.getQuantityStock());
+        }
+        return itemRepository.save(item);
     }
 
     @Override
-    public Review updateReviewById(int itemId, int reviewId) {
-        return null;
+    public Review updateReviewById(int reviewId, ReviewDTO reviewDTO) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
+        if (reviewDTO.getTitle() != null) {
+            review.setTitle(reviewDTO.getTitle());
+        }
+        if (reviewDTO.getNumberStar() != 0) {
+            review.setNumberStar(reviewDTO.getNumberStar());
+        }
+        if (reviewDTO.getDescription() != null) {
+            review.setDescription(reviewDTO.getDescription());
+        }
+        return reviewRepository.save(review);
     }
-
 }
