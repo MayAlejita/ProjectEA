@@ -164,6 +164,7 @@ public class CustomerService implements ICustomerService {
 
         if(customer!=null){
             customer.setEmailAddress(customerDTO.getEmailAddress());
+
         }
         return mapper.map(customer, CustomerDTO.class);
     }
@@ -194,19 +195,19 @@ public class CustomerService implements ICustomerService {
         return null;
     }
 
-    @Transactional
     @Override
-    public Order deleteOrderByCustomer(int idCustomer, int idOrder) {
-        List<OrderDTO> list = getOrderByCustomer(idCustomer);
-        Optional<OrderDTO> orderDTO = list.stream().filter(id -> id.getId() == idOrder).findFirst();
-        if (orderDTO.isPresent()) {
+    public Order deleteOrderById(int idOrder) {
+        Optional<Order> order = orderRepository.findById(idOrder);
+        if (order.isPresent()) {
             orderRepository.deleteById(idOrder);
-            return mapper.map(orderDTO.get(), Order.class);
+            return order.get();
         }
         return null;
     }
 
+
     public Optional<Customer> findByEmail(String email) {
+
         return customerRepository.findByEmail(email);
     }
 }
