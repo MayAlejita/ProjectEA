@@ -19,7 +19,7 @@ public interface ICustomerService {
     List<OrderDTO> getOrderByCustomer(int idCustomer);
 
     CustomerDTO updateCustomerById(int idCustomer, CustomerDTO customerDTO);
-
+  
     Customer deleteCustomerById(int idCustomer);
 
     OrderDTO updateOrderByCustomer(int idCustomer, int idOrder, OrderDTO orderDTO);

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -79,19 +80,20 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public List<OrderDTO> getOrderByCustomer(int idCustomer) {
-//        Optional<Customer> customer = customerRepository.findById(idCustomer);
-//        if(customer.isPresent()){
-//            List<Order> orderList = customer.get().getOrderList();
-//            return mapper.map(orderList, List.class);
-//        }
+        Optional<Customer> customer = customerRepository.findById(idCustomer);
+        if(customer.isPresent()){
+            List<Order> orderList = customer.get().getOrderList();
+            return mapper.map(orderList, List.class);
+        }
         return null;
     }
 
     @Transactional
     @Override
     public CustomerDTO updateCustomerById(int idCustomer, CustomerDTO customerDTO) {
-        Customer customer = customerRepository.findById(idCustomer).orElse(null);
-        if (customer != null) {
+        Customer customer= customerRepository.findById(idCustomer).orElse(null);
+
+        if(customer!=null){
             customer.setEmailAddress(customerDTO.getEmailAddress());
         }
         return mapper.map(customer, CustomerDTO.class);
@@ -117,6 +119,14 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void deleteOrderByCustomer(int idCustomer, int idOrder) {
+        Customer  customer= customerRepository.findById(idCustomer).orElse(null);
+        List<Order> orderList= customer.getOrderList();
+        Order order= orderList.stream().filter(id->id.equals(idOrder)).findFirst().get();
+        orderList.remove(order);
+//
+//        List<OrderDTO> list=  getOrderByCustomer(idCustomer);
+//        OrderDTO orderDTO= list.stream().filter(id->id.equals(idOrder)).findFirst().get();
+//        list.remove(orderDTO);
 
     }
 }
