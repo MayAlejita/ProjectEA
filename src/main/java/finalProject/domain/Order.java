@@ -18,21 +18,5 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private Status status;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(name = "")
-    @Transient
     private List<OrderLine> orderLineList;
-
-
-    public Order(int id, Status status) {
-        this.id = id;
-        this.status = status;
-    }
-
-//    public List<OrderLine> getOrderLineList() {
-//        return orderLineList;
-//    }
-//
-//    public void setOrderLineList(OrderLine order) {
-//        this.orderLineList.add(order);
-//    }
 }

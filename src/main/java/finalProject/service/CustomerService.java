@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -54,14 +55,10 @@ public class CustomerService implements ICustomerService {
     @Override
     public Order saveOrderByCustomer(int idCustomer, Order order) {
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
-        if (customer != null) {
-            List<Order> orderList = customer.getOrderList();
-            orderList.add(order);
-            customer.setOrderList(orderList);
-            customerRepository.save(customer);
-            return order;
-        }
-        return null;
+        Order order = mapper.map(orderDTO, Order.class);
+        customer.getOrderList().add(order);
+        Customer customerDb = customerRepository.save(customer);
+        return orderDTO;
     }
 
     @Override
@@ -96,8 +93,9 @@ public class CustomerService implements ICustomerService {
     @Transactional
     @Override
     public CustomerDTO updateCustomerById(int idCustomer, CustomerDTO customerDTO) {
-        Customer customer = customerRepository.findById(idCustomer).orElse(null);
-        if (customer != null) {
+        Customer customer= customerRepository.findById(idCustomer).orElse(null);
+
+        if(customer!=null){
             customer.setEmailAddress(customerDTO.getEmailAddress());
         }
         return mapper.map(customer, CustomerDTO.class);
@@ -123,6 +121,14 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void deleteOrderByCustomer(int idCustomer, int idOrder) {
+        Customer  customer= customerRepository.findById(idCustomer).orElse(null);
+        List<Order> orderList= customer.getOrderList();
+        Order order= orderList.stream().filter(id->id.equals(idOrder)).findFirst().get();
+        orderList.remove(order);
+//
+//        List<OrderDTO> list=  getOrderByCustomer(idCustomer);
+//        OrderDTO orderDTO= list.stream().filter(id->id.equals(idOrder)).findFirst().get();
+//        list.remove(orderDTO);
 
     }
 
