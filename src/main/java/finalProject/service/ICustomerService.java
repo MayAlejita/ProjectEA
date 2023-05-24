@@ -1,16 +1,16 @@
 package finalProject.service;
 
 import finalProject.domain.Customer;
+import finalProject.domain.Order;
 import finalProject.dto.CustomerDTO;
 import finalProject.dto.OrderDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface ICustomerService {
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
 
-    OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO);
+    Order saveOrderByCustomer(int idCustomer, Order orderDTO);
 
     List<CustomerDTO> getAllCustomers();
 

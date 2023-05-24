@@ -7,6 +7,7 @@ import finalProject.domain.Personal;
 import finalProject.dto.CustomerDTO;
 import finalProject.dto.OrderDTO;
 import finalProject.repositories.CustomerRepository;
+import finalProject.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class CustomerService implements ICustomerService {
     @Autowired
     CustomerRepository customerRepository;
+
     @Autowired
     private ModelMapper mapper;
 
@@ -51,7 +53,7 @@ public class CustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public OrderDTO saveOrderByCustomer(int idCustomer, OrderDTO orderDTO) {
+    public Order saveOrderByCustomer(int idCustomer, Order order) {
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
         Order order = mapper.map(orderDTO, Order.class);
         customer.getOrderList().add(order);
@@ -128,5 +130,9 @@ public class CustomerService implements ICustomerService {
 //        OrderDTO orderDTO= list.stream().filter(id->id.equals(idOrder)).findFirst().get();
 //        list.remove(orderDTO);
 
+    }
+
+    public Optional<Customer> findByEmail(String email) {
+        return customerRepository.findByEmail(email);
     }
 }

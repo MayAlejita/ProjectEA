@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.domain.Customer;
+import finalProject.domain.Order;
 import finalProject.dto.*;
 import finalProject.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class CustomerController {
     @Autowired
     private ICustomerService customerService;
 
+
+
     @PostMapping
     public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO customerDTO) {
         CustomerDTO customer = customerService.saveCustomer(customerDTO);
@@ -28,8 +31,8 @@ public class CustomerController {
     }
 
     @PostMapping("/{idCustomer}/orders")
-    public ResponseEntity<?> saveOrderByCustomer(@PathVariable int idCustomer, @RequestBody OrderDTO orderDTO) {
-        OrderDTO order = customerService.saveOrderByCustomer(idCustomer, orderDTO);
+    public ResponseEntity<?> saveOrderByCustomer(@PathVariable int idCustomer, @RequestBody Order order) {
+        Order o = customerService.saveOrderByCustomer(idCustomer, order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
