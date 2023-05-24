@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements ICustomerService {
     @Autowired
     CustomerRepository customerRepository;
+
     @Autowired
     OrderRepository orderRepository;
     @Autowired
@@ -204,5 +204,9 @@ public class CustomerService implements ICustomerService {
             return mapper.map(orderDTO.get(), Order.class);
         }
         return null;
+    }
+
+    public Optional<Customer> findByEmail(String email) {
+        return customerRepository.findByEmail(email);
     }
 }
