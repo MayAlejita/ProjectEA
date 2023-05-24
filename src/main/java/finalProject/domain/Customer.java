@@ -24,13 +24,13 @@ public class Customer {
     @JoinColumn(name = "customerId")
     private List<Address> addressList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
+@JoinColumn(name = "customerId")
     private List<Order> orderList = new ArrayList<>();
 
 //    public List<CreditCard> getCreditCardList() {
 //        return creditCardList;
 //    }
-
+//
 //    public void setCreditCardList(CreditCard creditCardList) {
 //        this.creditCardList.add(creditCardList);
 //    }
@@ -43,11 +43,11 @@ public class Customer {
 //        this.addressList.add(addressList);
 //    }
 //
-//    public List<Order> getOrderList() {
-//        return orderList;
-//    }
-//
-//    public void setOrderList(Order orderList) {
-//        this.orderList.add(orderList);
-//    }
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList.addAll(orderList);
+    }
 }

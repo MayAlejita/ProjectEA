@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,20 +19,20 @@ public class Order {
     private Status status;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinTable(name = "")
+    @Transient
     private List<OrderLine> orderLineList;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    private Customer customer;
+
 
     public Order(int id, Status status) {
         this.id = id;
         this.status = status;
     }
 
-    public List<OrderLine> getOrderLineList() {
-        return orderLineList;
-    }
-
-    public void setOrderLineList(OrderLine order) {
-        this.orderLineList.add(order);
-    }
+//    public List<OrderLine> getOrderLineList() {
+//        return orderLineList;
+//    }
+//
+//    public void setOrderLineList(OrderLine order) {
+//        this.orderLineList.add(order);
+//    }
 }
