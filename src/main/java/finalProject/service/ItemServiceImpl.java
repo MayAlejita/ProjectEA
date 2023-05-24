@@ -1,10 +1,7 @@
 package finalProject.service;
 
-import finalProject.domain.Customer;
 import finalProject.domain.Item;
-import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
-import finalProject.dto.ReviewDTO;
 import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
 import finalProject.repositories.ReviewRepository;
@@ -13,7 +10,6 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +17,6 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
     @Autowired
     private ModelMapper mapper;
 
@@ -56,31 +46,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Review addReview(Review review, int customerId, int itemId) {
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Item not found"));
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
-        review.setItem(item);
-        review.setCustomer(customer);
-        return reviewRepository.save(review);
-    }
-
-    @Override
-    public List<Review> getReviewsByItem(int itemId) {
-        return reviewRepository.findByItemId(itemId);
-    }
-
-    @Override
-    public List<Review> getReviewsByCustomerId(int customerId) {
-        return reviewRepository.findByCustomerId(customerId);
-    }
-
-    @Override
-    public Review getReviewById(int reviewId) {
-        return reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
-    }
-
-    @Override
     @Transactional
     public Item updateItemById(int id, ItemDTO itemDTO) {
         Item item = itemRepository.findById(id)
@@ -104,21 +69,5 @@ public class ItemServiceImpl implements ItemService {
             item.setQuantityStock(itemDTO.getQuantityStock());
         }
         return itemRepository.save(item);
-    }
-
-    @Override
-    public Review updateReviewById(int reviewId, ReviewDTO reviewDTO) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
-        if (reviewDTO.getTitle() != null) {
-            review.setTitle(reviewDTO.getTitle());
-        }
-        if (reviewDTO.getNumberStar() != 0) {
-            review.setNumberStar(reviewDTO.getNumberStar());
-        }
-        if (reviewDTO.getDescription() != null) {
-            review.setDescription(reviewDTO.getDescription());
-        }
-        return reviewRepository.save(review);
     }
 }

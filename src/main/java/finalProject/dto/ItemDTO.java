@@ -19,8 +19,5 @@ public class ItemDTO {
 
     private List<Review> reviewList;
     private List<Item> itemList = new ArrayList<Item>();
-    private List<ItemDTO> itemDTOList = new ArrayList<>();
-    public void setListDTOList(List<ItemDTO> itemDTOList) {
-        this.itemDTOList = itemDTOList;
-    }
+
 }

@@ -1,9 +1,8 @@
 package finalProject.controller;
 
 import finalProject.domain.Item;
-import finalProject.dto.ReviewDTO;
+import finalProject.dto.ItemsDTO;
 import finalProject.service.ItemService;
-import finalProject.domain.Review;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<?> findAllItems() {
         List<ItemDTO> itemDTOList = itemService.getAllItems();
-        ItemDTO items = new ItemDTO();
+        ItemsDTO items = new ItemsDTO();
         items.setItemDTOList(itemDTOList);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
@@ -50,31 +49,4 @@ public class ItemController {
         itemService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @PostMapping("/reviews/{itemId}/{customerId}")
-    public Review addReview(@PathVariable int itemId, @PathVariable int customerId, @RequestBody Review review) {
-        return itemService.addReview(review, itemId, customerId);
-    }
-
-    @GetMapping("/reviews/item/{itemId}")
-    public List<Review> getReviewsByItemId(@PathVariable int itemId) {
-        return itemService.getReviewsByItem(itemId);
-    }
-
-    @GetMapping("/reviews/customer/{customerId}")
-    public List<Review> getReviewsByCustomerId(@PathVariable int customerId) {
-        return itemService.getReviewsByCustomerId(customerId);
-    }
-
-    @GetMapping("/reviews/{reviewId}")
-    public Review getReviewById(@PathVariable int reviewId) {
-        return itemService.getReviewById(reviewId);
-    }
-
-    @PutMapping("/reviews/{reviewId}")
-    public ResponseEntity<?> updateReviewById(@PathVariable int reviewId, @RequestBody ReviewDTO reviewDTO) {
-        Review review = itemService.updateReviewById(reviewId, reviewDTO);
-        return new ResponseEntity<>(review, HttpStatus.OK);
-    }
-
 }
