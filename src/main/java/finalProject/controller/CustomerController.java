@@ -106,9 +106,9 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/{idCustomer}/orders/{idOrder}")
-    public ResponseEntity<?> deleteOrderByCustomer(@PathVariable int idCustomer, @PathVariable int idOrder){
-        Order order = customerService.deleteOrderByCustomer(idCustomer, idOrder);
+    @DeleteMapping("/orders/{idOrder}")
+    public ResponseEntity<?> deleteOrderById(@PathVariable int idOrder){
+        Order order = customerService.deleteOrderById(idOrder);
         if(order == null){
             MessageError msg = new MessageError();
             msg.setMessage("Order doesn't exist");

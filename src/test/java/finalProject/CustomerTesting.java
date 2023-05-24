@@ -34,7 +34,7 @@ public class CustomerTesting {
         }
     }
 
-    @Autowired
+    @ Autowired
     CustomerService customerService;
 
     @MockBean

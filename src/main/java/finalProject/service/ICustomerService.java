@@ -25,5 +25,5 @@ public interface ICustomerService {
 
     OrderDTO updateOrderByCustomer(int idCustomer, int idOrder, OrderDTO orderDTO);
 
-    Order deleteOrderByCustomer(int idCustomer, int idOrder);
+    public Order deleteOrderById(int idOrder);
 }

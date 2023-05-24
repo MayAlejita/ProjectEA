@@ -18,7 +18,7 @@ public class OrderLine {
     private int quantity;
     private boolean discount;
     private double discountValue;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Item item;
 
     public OrderLine(int quantity, boolean discount, double discountValue) {
