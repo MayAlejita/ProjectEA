@@ -1,5 +1,6 @@
 package finalProject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,13 @@ public class Review {
     private String title;
     private String description;
     private int numberStar;
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
