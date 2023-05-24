@@ -2,6 +2,7 @@ package finalProject.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import finalProject.domain.Order;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,5 +26,6 @@ public class CustomerDTO {
     private String emailAddress;
     private List<CreditCardDTO> creditCard = new ArrayList<>();
     private List<AddressDTO> address = new ArrayList<>();
-    private List<OrderDTO> order = new ArrayList<>();
+    private List<OrderDTO> order= new ArrayList<>();
+
 }

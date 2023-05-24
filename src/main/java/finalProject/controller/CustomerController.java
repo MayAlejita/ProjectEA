@@ -4,6 +4,7 @@ import finalProject.config.ExceptionMessage;
 import finalProject.domain.Customer;
 import finalProject.domain.Order;
 import finalProject.dto.*;
+import finalProject.repositories.AddressRepository;
 import finalProject.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,7 @@ public class CustomerController {
         return new ResponseEntity<>(total, HttpStatus.OK);
     }
 
-    @PutMapping("/{idCustomer}")
+    @PatchMapping("/{idCustomer}")
     public ResponseEntity<?> updateCustomerById(@PathVariable int idCustomer, @RequestBody CustomerDTO customerDTO) {
         try{
             CustomerDTO customer = customerService.updateCustomerById(idCustomer, customerDTO);

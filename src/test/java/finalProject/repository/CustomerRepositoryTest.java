@@ -24,4 +24,20 @@ public class CustomerRepositoryTest {
         Customer customer = new Customer();
         entityManager.persist(customer);
         entityManager.flush();
+<<<<<<< HEAD
+=======
+
+//        // when
+//        Customer found = customerRepository.findById();
+
+//
+//        // and
+//        assertThat(customer.getAddressList())
+//                .isEqualTo(found.getAddressList());
+//        // and
+//        assertThat(customer.getCreditCardList())
+//                .isEqualTo(found.getCreditCardList());
+
+    }
+>>>>>>> 9a48bf3 (no change)
 }

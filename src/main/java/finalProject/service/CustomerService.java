@@ -3,16 +3,18 @@ package finalProject.service;
 import finalProject.config.ExceptionMessage;
 import finalProject.domain.*;
 import finalProject.dto.*;
+import finalProject.repositories.AddressRepository;
 import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
 import finalProject.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -25,6 +27,9 @@ public class CustomerService implements ICustomerService {
     ItemRepository itemRepository;
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    AddressRepository addressRepository;
 
     @Override
     @Transactional
@@ -153,13 +158,16 @@ public class CustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public CustomerDTO updateCustomerById(int idCustomer, CustomerDTO customerDTO) {
+    public CustomerDTO updateCustomerById(int idCustomer, CustomerDTO customerDTO) { // update email needs
         Customer customer= customerRepository.findById(idCustomer).orElse(null);
 
         if(customer!=null){
             customer.setEmailAddress(customerDTO.getEmailAddress());
-
         }
+        customerRepository.save(customer);
+
+        System.out.println("customer updated"+ customer.getAddressList());
+
         return mapper.map(customer, CustomerDTO.class);
     }
 

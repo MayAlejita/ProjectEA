@@ -18,8 +18,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("select c from Customer c where c.emailAddress = :email")
     Optional<Customer> findByEmail(String email);
 
+<<<<<<< HEAD
     @Query("select c from  Customer  c  join c.orderList o where o.id=:idOrder")
     void findByOrderId(int idOrder);
 
+=======
+>>>>>>> 9a48bf3 (no change)
 
 }
