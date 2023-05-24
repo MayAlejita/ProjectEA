@@ -2,9 +2,7 @@ package finalProject.service;
 
 import finalProject.domain.Item;
 import finalProject.dto.ItemDTO;
-import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
-import finalProject.repositories.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
