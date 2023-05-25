@@ -9,7 +9,6 @@ import finalProject.repositories.ItemRepository;
 import finalProject.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -127,15 +126,11 @@ public class CustomerService implements ICustomerService {
     public CustomerDTO getCustomerById(int idCustomer) {
         Customer customer = customerRepository.findById(idCustomer).orElse(null);
         if (customer != null) {
-            if(customer.getClass().getSimpleName().equals("Personal")){
-                return mapper.map(customer, PersonalDTO.class);
+                return mapper.map(customer, CustomerDTO.class);
             }
-            else{
-                return mapper.map(customer, CorporateDTO.class);
-            }
+            return null;
         }
-        return null;
-    }
+
 
     @Override
     public List<OrderDTO> getOrderByCustomer(int idCustomer) {
@@ -165,8 +160,6 @@ public class CustomerService implements ICustomerService {
             customer.setEmailAddress(customerDTO.getEmailAddress());
         }
         customerRepository.save(customer);
-
-        System.out.println("customer updated"+ customer.getAddressList());
 
         return mapper.map(customer, CustomerDTO.class);
     }

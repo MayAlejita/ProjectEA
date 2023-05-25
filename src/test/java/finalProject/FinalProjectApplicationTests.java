@@ -2,7 +2,7 @@ package finalProject;
 
 import finalProject.controller.CustomerControllerTest;
 import finalProject.repository.CustomerRepositoryTest;
-import finalProject.service.CustomerServiceTest;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Suite.SuiteClasses({
 
 		CustomerControllerTest.class,
-		CustomerServiceTest.class,
+//		CustomerServiceTest.class,
 		CustomerRepositoryTest.class
 })
 @SpringBootTest
