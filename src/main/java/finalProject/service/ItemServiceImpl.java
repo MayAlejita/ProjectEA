@@ -13,9 +13,10 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,13 +66,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDTO addItem(ItemDTO itemDTO, MultipartFile imageFile) throws IOException {
-
-        byte[] fileBytes = imageFile.getBytes();
-        String serializedString = Base64.getEncoder().encodeToString(fileBytes);
-        itemDTO.setImage(serializedString);
+    public ItemDTO addItem(ItemDTO itemDTO) {
         Item item = itemRepository.save(mapper.map(itemDTO, Item.class));
-
         return mapper.map(item, ItemDTO.class);
     }
 
