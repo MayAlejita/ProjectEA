@@ -1,18 +1,14 @@
 package finalProject.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import finalProject.domain.Item;
 import finalProject.dto.ItemsDTO;
 import finalProject.service.ItemService;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -36,24 +32,15 @@ public class ItemController {
         return itemService.findItemById(id);
     }
 
-    @PostMapping(value = "",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<?> addItem(@RequestPart("itemDTO") String itemDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ItemDTO item = objectMapper.readValue(itemDTO, ItemDTO.class);
-        itemService.addItem(item,imageFile);
+    @PostMapping
+    public ResponseEntity<?> addItem(@RequestBody ItemDTO itemDTO){
+        itemService.addItem(itemDTO);
         return new ResponseEntity<>(itemDTO,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateItemById(@PathVariable int id, @RequestPart(value = "itemDTO", required = false) String itemDTO,@RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-        if (itemDTO == null) {
-            itemDTO = "{}";
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        ItemDTO itemDto = objectMapper.readValue(itemDTO, ItemDTO.class);
-        Item item = itemService.updateItemById(id, itemDto, imageFile);
+    public ResponseEntity<?> updateItemById(@PathVariable int id, @RequestBody ItemDTO itemDTO) {
+        Item item = itemService.updateItemById(id, itemDTO);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
