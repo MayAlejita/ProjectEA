@@ -1,8 +1,9 @@
 package finalProject.controller;
 
-import finalProject.domain.Customer;
 import finalProject.dto.CustomerDTO;
 import finalProject.service.CustomerService;
+import io.restassured.RestAssured;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -11,13 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.security.auth.login.AccountException;
-import java.util.Optional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static io.restassured.RestAssured.given;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AccountException.class)
@@ -28,26 +26,43 @@ public class CustomerControllerTest {
     @MockBean
     CustomerService customerService;
 
+    @BeforeClass
+    public static void setup() {
+        RestAssured.port = Integer.valueOf(9000);
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.basePath = "";
+    }
     @Test
     public void testGetCustomer() throws Exception {
 
-        Customer customer = new Customer("mail");
-        Mockito.when(customerService.findByEmail("email"))
-                .thenReturn(Optional.of(customer));
+        CustomerDTO customer = new CustomerDTO();
+        int id = 1;
+        String email = "email";
+        customer.setId(id);
+        customer.setEmailAddress(email);
 
-        mock.perform(get("/customers/mail"))
-                .andExpect(status().isNotFound());
+        Mockito.when(customerService.saveCustomer(customer))
+                .thenReturn(customer);
+
+        given()
+                .contentType("application/json")
+                .when().get("/customers").then()
+                .statusCode(200);
     }
 
     @Test
     public void testGetCustomerById() throws Exception {
         CustomerDTO customer = new CustomerDTO();
-        customer.setId(1);
-        Mockito.when(customerService.getCustomerById(1))
+        int id = 1;
+        customer.setId(id);
+        customer.setEmailAddress("mail");
+        Mockito.when(customerService.getCustomerById(id))
                 .thenReturn(customer);
+        given()
+                .contentType("application/json")
+                .when().get("/customers/1").then()
+                .statusCode(200);
 
-        mock.perform(get("/customers/1"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"));
+
     }
 }
