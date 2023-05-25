@@ -1,20 +1,30 @@
 package finalProject.service;
 
+import finalProject.config.ExceptionMessage;
+import finalProject.domain.Customer;
 import finalProject.domain.Item;
+import finalProject.domain.Order;
 import finalProject.dto.ItemDTO;
+import finalProject.dto.OrderDTO;
+import finalProject.repositories.CustomerRepository;
 import finalProject.repositories.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
     @Autowired
     private ModelMapper mapper;
 
@@ -33,8 +43,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteById(int id) {
-        itemRepository.deleteById(id);
+    public void deleteById(int itemId, int customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()){
+            List<Order> orderList = customer.get().getOrderList();
+            List<OrderDTO> list = new ArrayList<>();
+            orderList.forEach(o ->{
+                list.add(mapper.map(o, OrderDTO.class));
+            });
+            if (!list.isEmpty()) {
+                int count = (int) list.stream().filter(e -> e.getId() == itemId).count();
+                if (count < 1) {
+                    itemRepository.deleteById(itemId);
+                } else {
+                    throw new ExceptionMessage("There is an Order");
+                }
+            }
+        } else {
+            itemRepository.deleteById(itemId);
+        }
     }
 
     @Override

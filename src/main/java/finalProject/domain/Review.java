@@ -19,11 +19,11 @@ public class Review {
     private String description;
     private int numberStar;
     private LocalDate date = LocalDate.now();
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "item_id")
     private Item item;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "customer_id")
     private Customer customer;

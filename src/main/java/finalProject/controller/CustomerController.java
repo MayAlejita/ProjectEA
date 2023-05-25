@@ -27,6 +27,7 @@ public class CustomerController {
             msg.setMessage("Only choice one default shipping Address");
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
