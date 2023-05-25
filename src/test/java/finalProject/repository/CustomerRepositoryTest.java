@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
@@ -25,19 +27,14 @@ public class CustomerRepositoryTest {
     private CustomerRepository customerRepository;
 
     @Test
-    public void setCustomerRepository(){
+
+    public void setCustomerRepository() {
         Customer customer = new Customer("mail");
         entityManager.persist(customer);
         entityManager.flush();
 
-
         Optional<Customer> found = customerRepository.findByEmail("mail");
         assertThat(found.get().getEmailAddress(), equalTo(customer.getEmailAddress()));
-        //assertNotNull(found);
-
-
-
-
     }
 
 }
