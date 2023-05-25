@@ -5,6 +5,7 @@ import finalProject.domain.Customer;
 import finalProject.domain.Order;
 import finalProject.dto.*;
 import finalProject.service.ICustomerService;
+import finalProject.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class CustomerController {
             msg.setMessage("Only choice one default shipping Address");
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 

@@ -10,7 +10,7 @@ public interface ItemService {
   
     List<ItemDTO> getAllItems();
   
-    void deleteById(int id);
+    void deleteById(int id, int customerId);
 
     ItemDTO addItem(ItemDTO item);
 
