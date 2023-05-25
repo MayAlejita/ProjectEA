@@ -1,14 +1,18 @@
 package finalProject.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import finalProject.domain.Item;
 import finalProject.dto.ItemsDTO;
 import finalProject.service.ItemService;
 import finalProject.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -32,9 +36,13 @@ public class ItemController {
         return itemService.findItemById(id);
     }
 
-    @PostMapping
-    public ResponseEntity<?> addItem(@RequestBody ItemDTO itemDTO){
-        itemService.addItem(itemDTO);
+    @PostMapping(value = "",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<?> addItem(@RequestPart("itemDTO") String itemDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ItemDTO item = objectMapper.readValue(itemDTO, ItemDTO.class);
+        itemService.addItem(item,imageFile);
         return new ResponseEntity<>(itemDTO,HttpStatus.OK);
     }
 

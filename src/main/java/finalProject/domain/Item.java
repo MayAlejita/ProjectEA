@@ -18,7 +18,8 @@ public class Item {
     private String name;
     private String description;
     private double price;
-    private String image;//TODO
+    @Lob
+    private String image;
     private String barcodeNumber;
     private int quantityStock;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -26,6 +27,5 @@ public class Item {
     private List<Review> reviewList;
     @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private List<Item> itemList = new ArrayList<Item>();
-
 
 }
