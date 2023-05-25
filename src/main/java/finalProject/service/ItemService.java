@@ -16,6 +16,6 @@ public interface ItemService {
 
     ItemDTO addItem(ItemDTO item, MultipartFile imageFile) throws IOException;
 
-    Item updateItemById(int id, ItemDTO itemDTO);
+    Item updateItemById(int id, ItemDTO itemDTO, MultipartFile imageFile) throws IOException;
 
 }

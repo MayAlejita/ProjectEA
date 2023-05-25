@@ -42,6 +42,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void deleteById(int itemId, int customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if(customer.isPresent()){
@@ -76,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public Item updateItemById(int id, ItemDTO itemDTO) {
+    public Item updateItemById(int id, ItemDTO itemDTO, MultipartFile imageFile) throws IOException {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Item not found"));
         if(itemDTO.getName() != null) {
@@ -88,7 +89,10 @@ public class ItemServiceImpl implements ItemService {
         if(itemDTO.getBarcodeNumber() != null) {
             item.setBarcodeNumber(itemDTO.getBarcodeNumber());
         }
-        if(itemDTO.getImage() != null) {
+        if(imageFile != null) {
+            byte[] fileBytes = imageFile.getBytes();
+            String serializedString = Base64.getEncoder().encodeToString(fileBytes);
+            itemDTO.setImage(serializedString);
             item.setImage(itemDTO.getImage());
         }
         if(itemDTO.getDescription() != null) {
