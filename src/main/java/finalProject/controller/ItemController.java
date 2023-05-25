@@ -39,13 +39,8 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateItemById(@PathVariable int id, @RequestPart(value = "itemDTO", required = false) String itemDTO,@RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-        if (itemDTO == null) {
-            itemDTO = "{}";
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        ItemDTO itemDto = objectMapper.readValue(itemDTO, ItemDTO.class);
-        Item item = itemService.updateItemById(id, itemDto, imageFile);
+    public ResponseEntity<?> updateItemById(@PathVariable int id, @RequestBody ItemDTO itemDTO) {
+        Item item = itemService.updateItemById(id, itemDTO);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
