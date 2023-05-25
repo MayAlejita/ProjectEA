@@ -5,14 +5,17 @@ import finalProject.repositories.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
+import java.util.Optional;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class CustomerRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
@@ -20,24 +23,13 @@ public class CustomerRepositoryTest {
     private CustomerRepository customerRepository;
 
     @Test
-    public void setCustomerRepository(){
-        Customer customer = new Customer();
+    public void setCustomerRepository() {
+        Customer customer = new Customer("mail");
         entityManager.persist(customer);
         entityManager.flush();
-<<<<<<< HEAD
-=======
 
-//        // when
-//        Customer found = customerRepository.findById();
-
-//
-//        // and
-//        assertThat(customer.getAddressList())
-//                .isEqualTo(found.getAddressList());
-//        // and
-//        assertThat(customer.getCreditCardList())
-//                .isEqualTo(found.getCreditCardList());
-
+        Optional<Customer> found = customerRepository.findByEmail("mail");
+        assertThat(found.get().getEmailAddress(), equalTo(customer.getEmailAddress()));
     }
->>>>>>> 9a48bf3 (no change)
+
 }
